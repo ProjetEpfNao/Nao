@@ -1,6 +1,9 @@
 from password_manager import PasswordManager
 from client_exception import ConnectionError
+from command import Command
 import rest_api
+import threading
+import time
 
 
 class Client(object):
@@ -10,11 +13,17 @@ class Client(object):
         "Creates a new client and attempts to authenticate to the server."
         self.session = Session()
         self.password_manager = None
+        self.keep_running = False
+        self.command_queue = []
 
     def start(self):
         "Loads credentials and authenticates with the server."
         self.init_password_manager()
         self.authenticate()
+        threading.Thread(target=self.poll).start()
+
+    def stop(self):
+        self.keep_running = False
 
     def init_password_manager(self):
         "Creates a password manager and loads or fetches credentials."
@@ -25,16 +34,43 @@ class Client(object):
             user, passwd = self.fetch_new_credentials()
             self.password_manager.save(user, passwd)
 
-    def fetch_new_credentials(self):
-        "Fetches a new username/password pair from the server, creating a robot object on it by doing so."
-        resp = self.session.get(rest_api.CREDENTIALS_URL)
+    def fetch_data(self, url):
+        "Gets the given url and returns a json object from the response body."
+        resp = self.session.get(url)
         if resp.status_code != 200:
             raise ConnectionError(resp.status_code)
-        data = resp.json()
+        return resp.json()
+
+    def fetch_new_credentials(self):
+        "Fetches a new username/password pair from the server, creating a robot object on it by doing so."
+        data = self.fetch_data(rest_api.CREDENTIALS_URL)
         return (data[rest_api.CRED_USER_KEY], data[rest_api.CRED_PASS_KEY])
 
     def authenticate(self):
         pass
+
+    def fetch_command(self):
+        "Fetches the latest command sent by the user."
+        data = self.fetch_data(rest_api.COMMAND_URL)
+        command_id = data[rest_api.COMMAND_ID_KEY]
+        command_type = data[rest_api.COMMAND_TYPE_KEY]
+        return Command(command_id, command_type)
+
+    def send_command_reply(self, command, reply_data):
+        "Sends a reply for the given command."
+        reply = command.get_post_dict()
+        reply[rest_api.REPLY_DATA_KEY] = reply_data
+        self.session.post(rest_api.REPLY_URL, data=reply)
+
+    def poll(self):
+        "Regularly polls the server for new commands until told to stop."
+        self.keep_running = True
+        while self.keep_running:
+            command = self.fetch_command()
+            #TODO: Talk about command interface, handlers, etc...
+            self.command_queue.append(command)
+            time.sleep(rest_api.POLL_DELAY)
+
 
 if __name__ == "__main__":
     import requests
