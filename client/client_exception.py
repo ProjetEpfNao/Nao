@@ -6,3 +6,7 @@ class ClientException(Exception):
 
 class ConnectionError(ClientException):
     pass
+
+
+class NoSuchCommandError(ClientException):
+    pass

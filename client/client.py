@@ -1,5 +1,5 @@
 from password_manager import PasswordManager
-from client_exception import ConnectionError
+from client_exception import ConnectionError, NoSuchCommandError
 from command import Command
 import rest_api
 import threading
@@ -9,8 +9,10 @@ import time
 class Client(object):
     "Object in charge of communicating to the server, sending status info and fetching commands."
 
-    def __init__(self, Session):
+    def __init__(self, robot, Session):
         "Creates a new client and attempts to authenticate to the server."
+        self.robot = robot
+        self.robot.set_command_callback(self.send_command_reply)
         self.session = Session()
         self.password_manager = None
         self.keep_running = False
@@ -23,7 +25,15 @@ class Client(object):
         threading.Thread(target=self.poll).start()
 
     def stop(self):
+        "Stops polling the server."
         self.keep_running = False
+
+    def execute_on_robot(self, command_string, *args):
+        "Executes a command on the robot if it exists, raises an error otherwise."
+        if not self.robot.has_command(command_string):
+            raise NoSuchCommandException(
+                "Command " + command_string + " not found.")
+        self.robot.execute(command_string, *args)
 
     def init_password_manager(self):
         "Creates a password manager and loads or fetches credentials."
@@ -67,11 +77,8 @@ class Client(object):
         self.keep_running = True
         while self.keep_running:
             command = self.fetch_command()
-            #TODO: Talk about command interface, handlers, etc...
-            self.command_queue.append(command)
+            try:
+                self.execute_on_robot(command.type)
+            except NoSuchCommandError:
+                pass  # TODO: Implement logging
             time.sleep(rest_api.POLL_DELAY)
-
-
-if __name__ == "__main__":
-    import requests
-    Client(requests.Session)

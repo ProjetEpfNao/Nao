@@ -19,6 +19,12 @@ class MockResponse(object):
         return self.json_data
 
 
+class MockRobot(object):
+
+    def set_command_callback(self, c):
+        pass
+
+
 def mock_get(session, url, *args):
     if session.test_mode == TEST_MODE_FAILURE:
         return MockResponse(404, {})
@@ -32,7 +38,8 @@ class TestClient(unittest.TestCase):
     def setUp(self):
         Session = requests.Session
         Session.get = mock_get
-        self.c = client.Client(Session)
+        robot = MockRobot()
+        self.c = client.Client(robot, Session)
         self.c.session.test_mode = TEST_MODE_SUCCESS
 
     def tearDown(self):
