@@ -29,7 +29,10 @@ def mock_get(session, url, *args):
     if session.test_mode == TEST_MODE_FAILURE:
         return MockResponse(404, {})
     if url == rest_api.CREDENTIALS_URL:
-        return MockResponse(200, {rest_api.CRED_USER_KEY: TEST_USER, rest_api.CRED_PASS_KEY: TEST_PASS})
+        return MockResponse(200,
+            {rest_api.STATUS_KEY: rest_api.SUCCESS,
+             rest_api.CRED_USER_KEY: TEST_USER,
+             rest_api.CRED_PASS_KEY: TEST_PASS})
     return MockResponse(404, {})
 
 

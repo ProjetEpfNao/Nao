@@ -10,3 +10,6 @@ class ConnectionError(ClientException):
 
 class NoSuchCommandError(ClientException):
     pass
+
+class ServerError(ClientException):
+    pass
