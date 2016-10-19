@@ -9,7 +9,7 @@ import sys
 
 
 class Client(object):
-    "Object in charge of communicating to the server, sending status info and fetching commands."
+    "An object in charge of communicating with the server, sending status info and fetching commands."
 
     def __init__(self, robot, Session):
         "Creates a new client and attempts to authenticate to the server."
@@ -69,7 +69,8 @@ class Client(object):
         data = self.fetch_data(rest_api.COMMAND_URL)
         command_id = str(uuid.uuid4())
         command_type = data[rest_api.COMMAND_TYPE_KEY]
-        if len(command_type) == 0: return None
+        if len(command_type) == 0:
+            return None
         return Command(command_id, command_type)
 
     def send_command_reply(self, command, reply_data):

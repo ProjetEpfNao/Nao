@@ -19,6 +19,7 @@ class TestNao(unittest.TestCase):
 
     def test_execute_success(self):
         was_called = [False]
+
         def test_command():
             was_called[0] = True
 
@@ -26,10 +27,8 @@ class TestNao(unittest.TestCase):
         self.nao.execute(TEST_COMMAND)
         assert was_called[0]
 
-
     def test_execute_failure(self):
         self.assertRaises(KeyError, self.nao.execute, TEST_NOT_A_COMMAND)
-
 
 
 if __name__ == "__main__":
