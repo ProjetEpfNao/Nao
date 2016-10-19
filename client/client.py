@@ -5,6 +5,7 @@ import rest_api
 import threading
 import time
 import uuid
+import sys
 
 
 class Client(object):
@@ -85,6 +86,7 @@ class Client(object):
             if command:
                 try:
                     self.execute_on_robot(command.type)
-                except NoSuchCommandError:
+                except NoSuchCommandError as e:
+                    print(sys.exc_info())
                     pass  # TODO: Implement logging
             time.sleep(rest_api.POLL_DELAY)

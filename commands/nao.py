@@ -11,7 +11,7 @@ class Nao(object):
     def __init__(self, ip=HOST, port=PORT):
         self.ip = ip
         self.port = port
-        self.commands = dir(self)
+        self.commands = {"stand_up": self.stand_up}
 
     def execute(self, command_string, *args):
         self.commands[command_string](*args)
