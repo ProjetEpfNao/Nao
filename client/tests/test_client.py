@@ -138,7 +138,7 @@ class TestClient(unittest.TestCase):
 
     def test_execute_on_robot_success(self):
         self.c.execute_on_robot(TEST_COMMAND)
-        assert self.c.robot.execute_called == True
+        assert self.c.robot.execute_called
         assert self.c.robot.execute_c == TEST_COMMAND
         assert self.c.robot.execute_a == ()
 

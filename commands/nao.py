@@ -1,4 +1,9 @@
-from naoqi import ALProxy
+try:
+    from naoqi import ALProxy
+except ImportError:
+    #TODO: Replace this crap with environnement variable check for TEST or DEV modes
+    naoqi = None
+    print("Naoqi was not found, most functionnalities will not run.")
 import time
 
 HOST = "localhost"
@@ -11,7 +16,8 @@ class Nao(object):
     def __init__(self, ip=HOST, port=PORT):
         self.ip = ip
         self.port = port
-        self.commands = {"stand_up": self.stand_up}
+        self.commands = {"stand_up": self.stand_up,
+                         "raise_arm": self.raise_arm}
 
     def execute(self, command_string, *args):
         self.commands[command_string](*args)
@@ -25,7 +31,7 @@ class Nao(object):
     def set_command_callback(self, callback):
         self.reply = callback
 
-    # Le robot se lève s'il est assis, s'assoit sinon
+    # Le robot se leve s'il est assis, s'assoit sinon
     def stand_up(self):
         # tts = ALProxy("ALTextToSpeech", self.ip, self.port)
         motion = ALProxy("ALMotion", self.ip, self.port)
