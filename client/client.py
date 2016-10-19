@@ -34,7 +34,7 @@ class Client(object):
         "Executes a command on the robot if it exists, raises an error otherwise."
         if not self.robot.has_command(command_string):
             error_message = "Command " + command_string + " not found."
-            raise NoSuchCommandException(error_message)
+            raise NoSuchCommandError(error_message)
         self.robot.execute(command_string, *args)
 
     def init_password_manager(self):
