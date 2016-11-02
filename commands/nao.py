@@ -3,7 +3,7 @@ try:
 except ImportError:
     # TODO: Replace this crap with environnement variable check for TEST or
     # DEV modes
-    naoqi = None
+    ALProxy = None
     print("Naoqi was not found, most functionnalities will not run.")
 import time
 

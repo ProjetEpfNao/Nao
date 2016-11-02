@@ -23,3 +23,6 @@ STATUS_KEY = "result"
 SUCCESS = "SUCCESS"
 FAILURE = "FAILURE"
 ERROR_KEY = "error_message"
+
+# STREAMING
+STREAM_URL = BASE_URL + "stream"
