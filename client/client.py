@@ -8,7 +8,7 @@ import uuid
 import sys
 
 
-class Client(object):
+class Client(object):  # TODO: Add high level error handling and output to robot voice
     "An object in charge of communicating with the server, sending status info and fetching commands."
 
     def __init__(self, robot, Session):
@@ -42,13 +42,14 @@ class Client(object):
         self.password_manager = PasswordManager()
         try:
             self.password_manager.load()
+            creds = self.password_manager.get_credentials()
+            self.login(*creds)
         except IOError:
-            user, passwd = self.fetch_new_credentials()
+            user, passwd = self.password_manager.gen_credentials()
+            self.register(user, passwd)
             self.password_manager.save(user, passwd)
 
-    def fetch_data(self, url):
-        "Gets the given url and returns a json object from the response body."
-        resp = self.session.get(url)
+    def parse_response(self, resp):
         if resp.status_code != 200:
             raise ConnectionError(resp.status_code)
         body = resp.json()
@@ -56,13 +57,24 @@ class Client(object):
             raise ServerError(body[rest_api.ERROR_KEY])
         return body
 
-    def fetch_new_credentials(self):
-        "Fetches a new username/password pair from the server, creating a robot object on it by doing so."
-        data = self.fetch_data(rest_api.CREDENTIALS_URL)
-        return (data[rest_api.CRED_USER_KEY], data[rest_api.CRED_PASS_KEY])
+    def fetch_data(self, url):  # TODO: replace this fetch and only this one with get
+        "Gets the given url and returns a json object from the response body."
+        resp = self.session.get(url)
+        return self.parse_response(resp)
 
-    def authenticate(self):
-        pass
+    def post_data(self, url, data):
+        "Posts data to the given url and returns a  json object from the response body."
+        resp = self.session.post(url, data=data)
+        return self.parse_response(resp)
+
+    def register(self, username, password):
+        "Generates a new username/password pair and register on the server."
+        creds = {rest_api.USER_KEY: username, rest_api.PASS_KEY: password}
+        self.post_data(rest_api.REGISTER_URL, data=creds)
+
+    def login(self, username, password):
+        creds = {rest_api.USER_KEY: username, rest_api.PASS_KEY: password}
+        self.post_data(rest_api.LOGIN_URL, data=creds)
 
     def fetch_command(self):
         "Fetches the latest command sent by the user."

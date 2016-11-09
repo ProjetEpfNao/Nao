@@ -1,12 +1,11 @@
 # BASE SERVER URL
 BASE_URL = "http://etiennedesticourt.pythonanywhere.com"
 
-# CREDENTIALS REQUEST
-CREDENTIALS_URL = BASE_URL + "credentials"
-CRED_USER_KEY = "username"
-CRED_PASS_KEY = "password"
-
-# AUTHENTICATION REQUEST
+# REGISTER & LOGIN
+REGISTER_URL = BASE_URL + "/register"
+LOGIN_URL = BASE_URL + "/login"
+USER_KEY = "username"
+PASS_KEY = "password"
 
 # COMMAND POLLING
 COMMAND_URL = BASE_URL + "/get_last_command"

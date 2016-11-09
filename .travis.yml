@@ -1,4 +1,6 @@
 language: python
 python: 2.7
-install: pip install requests
+install:
+  - pip install requests
+  - pip install matplotlib
 script: python -m unittest discover
