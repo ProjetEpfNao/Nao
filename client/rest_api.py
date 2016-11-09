@@ -6,6 +6,7 @@ REGISTER_URL = BASE_URL + "/register"
 LOGIN_URL = BASE_URL + "/login"
 USER_KEY = "username"
 PASS_KEY = "password"
+ROBOT_KEY = "is_robot"
 
 # COMMAND POLLING
 COMMAND_URL = BASE_URL + "/get_last_command"

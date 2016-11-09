@@ -23,7 +23,8 @@ class Client(object):  # TODO: Add high level error handling and output to robot
     def start(self):
         "Loads credentials and authenticates with the server."
         self.init_password_manager()
-        self.authenticate()
+        creds = self.password_manager.get_credentials()
+        self.login(*creds)
         threading.Thread(target=self.poll).start()
 
     def stop(self):
@@ -42,8 +43,6 @@ class Client(object):  # TODO: Add high level error handling and output to robot
         self.password_manager = PasswordManager()
         try:
             self.password_manager.load()
-            creds = self.password_manager.get_credentials()
-            self.login(*creds)
         except IOError:
             user, passwd = self.password_manager.gen_credentials()
             self.register(user, passwd)
@@ -69,7 +68,8 @@ class Client(object):  # TODO: Add high level error handling and output to robot
 
     def register(self, username, password):
         "Generates a new username/password pair and register on the server."
-        creds = {rest_api.USER_KEY: username, rest_api.PASS_KEY: password}
+        creds = {rest_api.USER_KEY: username,
+                 rest_api.PASS_KEY: password, rest_api.ROBOT_KEY: True}
         self.post_data(rest_api.REGISTER_URL, data=creds)
 
     def login(self, username, password):
