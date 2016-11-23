@@ -45,6 +45,24 @@ class Nao(object):
         else:
             motion.wakeUp()
 
+    def sit_down(self):
+        "Makes the robot stand if it's sitting, makes him sit otherwise."
+        # tts = ALProxy("ALTextToSpeech", self.ip, self.port)
+        motion = ALProxy("ALMotion", self.ip, self.port)
+        if motion.robotIsWakeUp():
+            motion.rest()
+
+    def look_up(self):
+        try:
+            motion = ALProxy("ALMotion", self.ip, self.port)
+            motion.setStiffnesses("Head", 1.0)
+            names = "HeadPitch"
+            changes = -0.15
+            fractionMaxSpeed = 0.05
+            motion.changeAngles(names, changes, fractionMaxSpeed)
+        except BaseException, err:
+            print err
+
     def raise_arm(self):
         "Raises the robot's arm."
         names = list()
@@ -173,8 +191,11 @@ class Nao(object):
 
         try:
             # TODO: use self.ip, self.host
-            motion = ALProxy("ALMotion", "192.168.1.44", 9559)
-            motion.wakeUp()
+            motion = ALProxy("ALMotion", self.ip, self.port)
+            if (motion.robotIsWakeUp()):
+                motion.rest()
+            # motion.wakeUp()
+            motion.setStiffnesses("Body", 1.0)
             motion.angleInterpolationBezier(names, times, keys)
             time.sleep(5)
             motion.rest()
