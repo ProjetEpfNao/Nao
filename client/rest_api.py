@@ -8,6 +8,9 @@ USER_KEY = "username"
 PASS_KEY = "password"
 ROBOT_KEY = "is_robot"
 
+#BATTERY
+BATTERY_URL = "/update_battery_info"
+
 # COMMAND POLLING
 COMMAND_URL = BASE_URL + "/get_last_command"
 COMMAND_ID_KEY = "id"

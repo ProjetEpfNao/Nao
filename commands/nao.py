@@ -36,6 +36,10 @@ class Nao(object):
         "Overrides the reply function that'll be called upon completion of a command."
         self.reply = callback
 
+    def get_battery(self):
+        "Returns the percentage of remaining battery."
+        return 90.
+
     def toggle_stand(self):
         "Makes the robot stand if it's sitting, makes him sit otherwise."
         # tts = ALProxy("ALTextToSpeech", self.ip, self.port)

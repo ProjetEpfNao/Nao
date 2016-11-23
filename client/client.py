@@ -36,7 +36,11 @@ class Client(object):  # TODO: Add high level error handling and output to robot
         if not self.robot.has_command(command_string):
             error_message = "Command " + command_string + " not found."
             raise NoSuchCommandError(error_message)
-        self.robot.execute(command_string, *args)
+        result = self.robot.execute(command_string, *args)
+
+        if command_string == "battery": #ugly but whatever
+            self.post_battery_info(result)
+
 
     def init_password_manager(self):
         "Creates a password manager and loads or fetches credentials."
@@ -65,6 +69,9 @@ class Client(object):  # TODO: Add high level error handling and output to robot
         "Posts data to the given url and returns a  json object from the response body."
         resp = self.session.post(url, data=data)
         return self.parse_response(resp)
+
+    def post_battery_info(self, battery):
+        return self.post_data(rest_api.BATTERY_URL, str(battery))
 
     def register(self, username, password):
         "Generates a new username/password pair and register on the server."
