@@ -78,7 +78,7 @@ class Nao(object):
         except BaseException, err:
             print err
     
-    def look_left(self):
+    def look_right(self):
         try:
             motion = ALProxy("ALMotion", self.ip, self.port)
             motion.setStiffnesses("Head", 1.0)
@@ -89,7 +89,7 @@ class Nao(object):
         except BaseException, err:
             print err
     
-    def look_right(self):
+    def look_left(self):
         try:
             motion = ALProxy("ALMotion", self.ip, self.port)
             motion.setStiffnesses("Head", 1.0)
