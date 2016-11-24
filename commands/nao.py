@@ -66,6 +66,39 @@ class Nao(object):
             motion.changeAngles(names, changes, fractionMaxSpeed)
         except BaseException, err:
             print err
+            
+    def look_down(self):
+        try:
+            motion = ALProxy("ALMotion", self.ip, self.port)
+            motion.setStiffnesses("Head", 1.0)
+            names = "HeadPitch"
+            changes = 0.15
+            fractionMaxSpeed = 0.05
+            motion.changeAngles(names, changes, fractionMaxSpeed)
+        except BaseException, err:
+            print err
+    
+    def look_left(self):
+        try:
+            motion = ALProxy("ALMotion", self.ip, self.port)
+            motion.setStiffnesses("Head", 1.0)
+            names = "HeadYaw"
+            changes = -0.15
+            fractionMaxSpeed = 0.05
+            motion.changeAngles(names, changes, fractionMaxSpeed)
+        except BaseException, err:
+            print err
+    
+    def look_right(self):
+        try:
+            motion = ALProxy("ALMotion", self.ip, self.port)
+            motion.setStiffnesses("Head", 1.0)
+            names = "HeadPitch"
+            changes = 0.15
+            fractionMaxSpeed = 0.05
+            motion.changeAngles(names, changes, fractionMaxSpeed)
+        except BaseException, err:
+            print err
 
     def raise_arm(self):
         "Raises the robot's arm."
