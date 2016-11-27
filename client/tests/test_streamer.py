@@ -1,4 +1,4 @@
-from client import streamer
+from client import streamer_deprecated as streamer
 import unittest
 import requests
 
