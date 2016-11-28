@@ -66,7 +66,7 @@ class Nao(object):
             motion.changeAngles(names, changes, fractionMaxSpeed)
         except BaseException, err:
             print err
-            
+
     def look_down(self):
         try:
             motion = ALProxy("ALMotion", self.ip, self.port)
@@ -77,7 +77,7 @@ class Nao(object):
             motion.changeAngles(names, changes, fractionMaxSpeed)
         except BaseException, err:
             print err
-    
+
     def look_right(self):
         try:
             motion = ALProxy("ALMotion", self.ip, self.port)
@@ -88,7 +88,7 @@ class Nao(object):
             motion.changeAngles(names, changes, fractionMaxSpeed)
         except BaseException, err:
             print err
-    
+
     def look_left(self):
         try:
             motion = ALProxy("ALMotion", self.ip, self.port)
