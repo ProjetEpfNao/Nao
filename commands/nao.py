@@ -15,7 +15,12 @@ class Nao(object):
         self.ip = ip
         self.port = port
         self.commands = {"stand_up": self.toggle_stand,  # TODO: update command name after demo
-                         "raise_arm": self.raise_arm}
+                         "sit_down": self.sit_down,
+                         "raise_arm": self.raise_arm,
+                         "look_up": self.look_up,
+                         "look_down": self.look_down,
+                         "look_left": self.look_left,
+                         "look_right": self.look_right}
 
     def execute(self, command_string, *args):
         "Execute a command by its name."

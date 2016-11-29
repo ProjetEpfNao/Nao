@@ -10,7 +10,7 @@ import os
 import time
 import threading
 
-RECORIDNG_LENGTH = 4
+RECORIDNG_LENGTH = 15
 RECORDING_PATH = "/home/nao/recordings/cameras"
 
 
@@ -29,7 +29,7 @@ class StreamFeeder(object):
     def configure(self):
         # Configure video format
         self.vr = ALProxy("ALVideoRecorder", self.ip, self.port)
-        self.vr.setResolution(1)
+        self.vr.setResolution(2)
         self.vr.setFrameRate(10)
         self.vr.setVideoFormat("MJPG")
 
