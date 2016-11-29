@@ -8,6 +8,7 @@ except ImportError:
 import uuid
 import os
 import time
+import threading
 
 RECORIDNG_LENGTH = 4
 RECORDING_PATH = "/home/nao/recordings/cameras"
@@ -23,7 +24,7 @@ class StreamFeeder(object):
         self.recording_length = recording_length
         self.recordings = []
         self.is_recording = False
-        #self.configure()
+        self.configure()
 
     def configure(self):
         # Configure video format
@@ -36,12 +37,11 @@ class StreamFeeder(object):
         # Record video to file
         filename = str(uuid.uuid4())
         self.vr.startRecording(self.recording_path, filename)
-        print(self.vr.getCameraID())
         time.sleep(self.recording_length)
         self.vr.stopRecording()
 
         # Add to recordings list
-        path = os.path.join(self.recording_path, filename)
+        path = os.path.join(self.recording_path, filename + ".avi")
         self.recordings.append(path)
 
     def record_sound(self):
@@ -57,6 +57,7 @@ class StreamFeeder(object):
 
     def stop(self):
         self.is_recording = False
+
 
 
 if __name__ == "__main__":

@@ -7,14 +7,11 @@ except ImportError:
     print("Naoqi was not found, most functionnalities will not run.")
 import time
 
-HOST = "localhost"
-PORT = 9559
-
 
 class Nao(object):
     "A Nao robot that can execute commands and report its status."
 
-    def __init__(self, ip=HOST, port=PORT):
+    def __init__(self, ip, port):
         self.ip = ip
         self.port = port
         self.commands = {"stand_up": self.toggle_stand,  # TODO: update command name after demo
