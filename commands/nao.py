@@ -22,7 +22,9 @@ class Nao(object):
                          "look_left": self.look_left,
                          "look_right": self.look_right,
                          "get_battery": self.get_battery,
-                         "speak": self.speak}
+                         "speak": self.speak,
+                         "volume_up": self.volume_up,
+                         "volume_down": self.volume_down}
 
     def execute(self, command_string, *args):
         "Execute a command by its name."
@@ -117,6 +119,31 @@ class Nao(object):
             altts.say(tts)
         except BaseException, err:
             print err
+
+    def volume_up(self):
+        try:
+            audio = ALProxy("ALAudioDevice", self.ip, self.port)
+            volume = audio.getOutputVolume()
+            volume = volume+20
+            if(volume > 100):
+                audio.setOutputVolume(100)
+            else:
+                audio.setOutputVolume(volume)
+        except BaseException, err:
+            print err
+
+    def volume_down(self):
+        try:
+            audio = ALProxy("ALAudioDevice", self.ip, self.port)
+            volume = audio.getOutputVolume()
+            volume = volume-20
+            if(volume < 0):
+                audio.setOutputVolume(0)
+            else:
+                audio.setOutputVolume(volume)
+        except BaseException, err:
+            print err
+
 
     def raise_arm(self):
         "Raises the robot's arm."
@@ -260,3 +287,9 @@ class Nao(object):
 if __name__ == "__main__":
     nao = Nao("192.168.1.44", 9559)
     #nao.look_down()
+    audio = ALProxy("ALAudioDevice", "192.168.1.44", 9559)
+    print audio.getOutputVolume()
+    nao.volume_up()
+    print audio.getOutputVolume()
+    nao.volume_down()
+    print audio.getOutputVolume()
