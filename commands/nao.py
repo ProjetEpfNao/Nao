@@ -20,7 +20,9 @@ class Nao(object):
                          "look_up": self.look_up,
                          "look_down": self.look_down,
                          "look_left": self.look_left,
-                         "look_right": self.look_right}
+                         "look_right": self.look_right,
+                         "get_battery": self.get_battery,
+                         "speak": self.speak}
 
     def execute(self, command_string, *args):
         "Execute a command by its name."
@@ -99,6 +101,20 @@ class Nao(object):
             changes = 0.15
             fractionMaxSpeed = 0.05
             motion.changeAngles(names, changes, fractionMaxSpeed)
+        except BaseException, err:
+            print err
+
+    def get_battery(self):
+        try:
+            battery = ALProxy("ALBattery", self.ip, self.port)
+            return battery.getBatteryCharge()
+        except BaseException, err:
+            print err
+
+    def speak(self, tts):
+        try:
+            altts = ALProxy("ALTextToSpeech", self.ip, self.port)
+            altts.say(tts)
         except BaseException, err:
             print err
 
@@ -242,5 +258,5 @@ class Nao(object):
             print err
 
 if __name__ == "__main__":
-    nao = Nao()
-    nao.stand_up()
+    nao = Nao("192.168.1.44", 9559)
+    #nao.look_down()
