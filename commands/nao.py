@@ -21,7 +21,7 @@ class Nao(object):
                          "look_down": self.look_down,
                          "look_left": self.look_left,
                          "look_right": self.look_right,
-                         "get_battery": self.get_battery,
+                         "battery": self.get_battery,
                          "speak": self.speak,
                          "volume_up": self.volume_up,
                          "volume_down": self.volume_down}
