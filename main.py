@@ -9,7 +9,7 @@ import time
 if __name__ == "__main__":
     IP = "localhost"
     PORT = 9559
-    REMOTE = "http://54.173.164.98:80/upload"
+    REMOTE = "http://54.152.73.101:80/upload"
 
     # TODO: Add argv options for ip/host
     robot = Nao(IP, PORT)
