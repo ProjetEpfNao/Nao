@@ -8,7 +8,7 @@ TEST_NOT_A_COMMAND = "not a command"
 class TestNao(unittest.TestCase):
 
     def setUp(self):
-        self.nao = nao.Nao()
+        self.nao = nao.Nao("localhost", 9559)
 
     def tearDown(self):
         del self.nao

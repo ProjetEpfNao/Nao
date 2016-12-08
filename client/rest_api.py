@@ -15,6 +15,7 @@ BATTERY_URL = BASE_URL + "/update_battery_info"
 COMMAND_URL = BASE_URL + "/get_last_command"
 COMMAND_ID_KEY = "id"
 COMMAND_TYPE_KEY = "command"
+COMMAND_CONTENT_KEY = "content"
 POLL_DELAY = 3
 
 # COMMAND REPLIES

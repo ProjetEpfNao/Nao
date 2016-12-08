@@ -38,19 +38,20 @@ class Client(object):  # TODO: Add high level error handling and output to robot
             raise NoSuchCommandError(error_message)
         result = self.robot.execute(command_string, *args)
 
-        if command_string == "battery": #ugly but whatever
+        if command_string == "battery":  # ugly but whatever
             self.post_battery_info(result)
-
 
     def init_password_manager(self):
         "Creates a password manager and loads or fetches credentials."
         self.password_manager = PasswordManager()
         try:
             self.password_manager.load()
+            print("Loaded credentials.")
         except IOError:
             user, passwd = self.password_manager.gen_credentials()
             self.register(user, passwd)
             self.password_manager.save(user, passwd)
+            print("Generated new credentials.")
 
     def parse_response(self, resp):
         if resp.status_code != 200:
@@ -88,9 +89,12 @@ class Client(object):  # TODO: Add high level error handling and output to robot
         data = self.fetch_data(rest_api.COMMAND_URL)
         command_id = str(uuid.uuid4())
         command_type = data[rest_api.COMMAND_TYPE_KEY]
+        command_content = None
+        if rest_api.COMMAND_CONTENT_KEY in data:
+            command_content = data[rest_api.COMMAND_CONTENT_KEY]
         if len(command_type) == 0:
             return None
-        return Command(command_id, command_type)
+        return Command(command_id, command_type, command_content)
 
     def send_command_reply(self, command, reply_data):
         "Sends a reply for the given command."
@@ -104,8 +108,11 @@ class Client(object):  # TODO: Add high level error handling and output to robot
         while self.keep_running:
             command = self.fetch_command()
             if command:
+                args = []
+                if command.content:
+                    args = [command.content]
                 try:
-                    self.execute_on_robot(command.type)
+                    self.execute_on_robot(command.type, *args)
                 except NoSuchCommandError as e:
                     print(sys.exc_info())
                     pass  # TODO: Implement logging
