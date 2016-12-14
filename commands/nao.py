@@ -1,8 +1,6 @@
 try:
     from naoqi import ALProxy
 except ImportError:
-    # TODO: Replace this crap with environnement variable check for TEST or
-    # DEV modes
     ALProxy = None
     print("Naoqi was not found, most functionnalities will not run.")
 import time
@@ -99,7 +97,7 @@ class Nao(object):
         try:
             motion = ALProxy("ALMotion", self.ip, self.port)
             motion.setStiffnesses("Head", 1.0)
-            names = "HeadPitch"
+            names = "HeadYaw"
             changes = 0.15
             fractionMaxSpeed = 0.05
             motion.changeAngles(names, changes, fractionMaxSpeed)
@@ -287,11 +285,3 @@ class Nao(object):
             print err
 
 if __name__ == "__main__":
-    nao = Nao("192.168.1.44", 9559)
-    #nao.look_down()
-    audio = ALProxy("ALAudioDevice", "192.168.1.44", 9559)
-    print audio.getOutputVolume()
-    nao.volume_up()
-    print audio.getOutputVolume()
-    nao.volume_down()
-    print audio.getOutputVolume()
