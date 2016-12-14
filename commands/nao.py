@@ -282,3 +282,4 @@ class Nao(object):
             print err
 
 if __name__ == "__main__":
+    pass
