@@ -13,6 +13,7 @@ class Streamer(object):
         self.max_skip_delay = max_skip_delay
         self.paths = paths
         self.server_url = server_url
+        print("Streamer initiated.")
 
     def delete_file(self, path):
         print("Deleting", path)
@@ -43,14 +44,17 @@ class Streamer(object):
             if path == None:
                 time.sleep(0.2)
                 continue
+            print("Streaming:", path)
             with open(path, "rb") as f:
                 self.stream_file(f)
+            print("Done streaming:", path)
             self.delete_file(path)
             time.sleep(0.1)
 
     def start(self):
         self.is_running = True
         threading.Thread(target=self.run).start()
+        print("Streamer started.")
 
     def stop(self):
         self.is_running = False

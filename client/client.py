@@ -19,6 +19,7 @@ class Client(object):  # TODO: Add high level error handling and output to robot
         self.password_manager = None
         self.keep_running = False
         self.command_queue = []
+        print("Client initiated.")
 
     def start(self):
         "Loads credentials and authenticates with the server."
@@ -26,6 +27,7 @@ class Client(object):  # TODO: Add high level error handling and output to robot
         creds = self.password_manager.get_credentials()
         self.login(*creds)
         threading.Thread(target=self.poll).start()
+        print("Client started.")
 
     def stop(self):
         "Stops polling the server."
@@ -112,6 +114,7 @@ class Client(object):  # TODO: Add high level error handling and output to robot
                 if command.content:
                     args = [command.content]
                 try:
+                    print("Received new command.", command.type)
                     self.execute_on_robot(command.type, *args)
                 except NoSuchCommandError as e:
                     print(sys.exc_info())

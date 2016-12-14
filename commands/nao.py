@@ -114,6 +114,8 @@ class Nao(object):
             print err
 
     def speak(self, tts):
+        tts = tts.encode("latin1")
+        print("About to say:", tts)
         try:
             altts = ALProxy("ALTextToSpeech", self.ip, self.port)
             altts.say(tts)

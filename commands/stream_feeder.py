@@ -25,12 +25,13 @@ class StreamFeeder(object):
         self.recordings = []
         self.is_recording = False
         self.configure()
+        print("Stream feeder initiated.")
 
     def configure(self):
         # Configure video format
         self.vr = ALProxy("ALVideoRecorder", self.ip, self.port)
         self.vr.setResolution(2)
-        self.vr.setFrameRate(10)
+        self.vr.setFrameRate(15)
         self.vr.setVideoFormat("MJPG")
 
     def record_video(self):
@@ -54,6 +55,7 @@ class StreamFeeder(object):
     def start(self):
         self.is_recording = True
         threading.Thread(target=self.record_continuously).start()
+        print("Stream feeder started.")
 
     def stop(self):
         self.is_recording = False

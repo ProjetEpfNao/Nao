@@ -11,6 +11,7 @@ if __name__ == "__main__":
     PORT = 9559
     REMOTE = "http://54.152.73.101:80/upload"
 
+    print("Initiating Robot systems.")
     # TODO: Add argv options for ip/host
     robot = Nao(IP, PORT)
     client = Client(robot, requests.Session)
@@ -35,8 +36,12 @@ if __name__ == "__main__":
     except:
         pass
 
+    print("Keyboard interrupt received. Stopping all systems.")
+
     client.stop()
     feed.stop()
     # Giving time for streamer to finish putting his things in order
     time.sleep(4)
     streamer.stop()
+
+    print("All systems stopped.")
