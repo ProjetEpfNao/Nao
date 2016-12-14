@@ -10,6 +10,7 @@ ROBOT_KEY = "is_robot"
 
 #BATTERY
 BATTERY_URL = BASE_URL + "/update_battery_info"
+BATTERY_KEY = "battery"
 
 # COMMAND POLLING
 COMMAND_URL = BASE_URL + "/get_last_command"

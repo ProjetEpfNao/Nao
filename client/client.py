@@ -74,7 +74,8 @@ class Client(object):  # TODO: Add high level error handling and output to robot
         return self.parse_response(resp)
 
     def post_battery_info(self, battery):
-        return self.post_data(rest_api.BATTERY_URL, str(battery))
+        data = {rest_api.BATTERY_KEY: battery}
+        return self.post_data(rest_api.BATTERY_URL, data)
 
     def register(self, username, password):
         "Generates a new username/password pair and register on the server."
