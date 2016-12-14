@@ -26,7 +26,7 @@ class Nao(object):
 
     def execute(self, command_string, *args):
         "Execute a command by its name."
-        self.commands[command_string](*args)
+        return self.commands[command_string](*args)
 
     def reply(self, *args):
         "Reply callback that'll be called when a command is completed."
@@ -107,6 +107,7 @@ class Nao(object):
             return battery.getBatteryCharge()
         except BaseException, err:
             print err
+            return 0
 
     def speak(self, tts):
         tts = tts.encode("latin1")
